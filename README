@@ -1,3 +1,15 @@
+Oden is an attempt to make a python/tornado social network server
+that is able to connect to the diaspora network.
+
+Note that this isn't in any way related to Diaspora, it's just a 
+proof of concept of my own.
+
+Also note that this is reeeeaaaaly early stuff, only basic 
+functionality for creating a user, logging in etc is done.
+ 
+Any contributions is greatly appreciated! :)
+
+
 Install:
 ---------------------------------------------------------------------
 1. Install python >= 2.6 and < 3
@@ -17,4 +29,3 @@ Deps:
  Python modules:
   - Tornado (python-tornado packade)
   - pyMongo (python-pymongo package)
---------------------------------------------------------------------
