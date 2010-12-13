@@ -16,7 +16,7 @@ Install:
 2. Install the dependencies listed below
 3. Copy config.py.example to config.py and edit to suit 
    your environment
-4. Before running, run you can run test.py to verify 
+4. Before running, you can run test.py to verify 
    that everything works
 
 
