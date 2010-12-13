@@ -8,8 +8,7 @@
 # ------------------------------------------------------------------------------
 
 # TODO:
-# Replace those test with unittest or something like that whenever a lot of
-# spare time time flies by
+# Replace these tests with unittest
 
 import config
 from handlers import helper
@@ -24,11 +23,11 @@ success         = 0
 fail            = 0
 
 # Disable/Enable tests
-test_rsa                = False
-test_new_people         = False
-test_new_user           = False
-test_get_user_by_user   = False
-test_get_user_by_id     = False
+test_rsa                = True
+test_new_people         = True
+test_new_user           = True
+test_get_user_by_user   = True
+test_get_user_by_id     = True
 test_get_people_by_id   = True
 
 # Run selected tests
