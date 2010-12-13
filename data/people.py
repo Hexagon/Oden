@@ -14,7 +14,7 @@ class People(dbobject.Base):
         self.debug = None
 
     # Creates a new person
-    def new(self,user_id,diaspora_handle,serialized_public_key,pod_url,   # Mandatory
+    def new(self,user_id,oden_handle,serialized_public_key,pod_url,   # Mandatory
             searchable=True,image_url=None,gender=""                        # Optionals
             ,birthday=None,last_name="",first_name="",bio=""):
 
@@ -23,7 +23,7 @@ class People(dbobject.Base):
                     "searchable":searchable,
                     "image_url":image_url,
                     "gender":gender,
-                    "diaspora_handle":diaspora_handle,
+                    "oden_handle":oden_handle,
                     "birthday":birthday,
                     "last_name":last_name,
                     "first_name":first_name,
@@ -38,7 +38,7 @@ class People(dbobject.Base):
                     "updated_at":datetime.datetime.utcnow(),
                     "url":pod_url,
                     "serialized_public_key":serialized_public_key,
-                    "diaspora_handle":diaspora_handle
+                    "oden_handle":oden_handle
                     }
 
         # Try inserting object
@@ -52,7 +52,7 @@ class People(dbobject.Base):
 
     # Fetch a people object by handle
     def get_by_handle(self,_handle):
-        self.data = self.collection.find_one({"diaspora_handle":_handle})
+        self.data = self.collection.find_one({"oden_handle":_handle})
         if self.data != None:
             self.object_id = self.data[u'_id']
         return self.data
