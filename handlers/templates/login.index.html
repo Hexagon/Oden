@@ -1,0 +1,24 @@
+{% extends "application.html" %}
+
+{% block container_override %}
+            <div class="span-12 append-6 prepend-6 last">
+                <div class="span-8"><h1>ODEN</h1></div>
+                <div class="span-4 last"><h1>login</h1></div>
+                {% if errors %}
+                    <p><b>There were problems logging you in:</b></p>
+                    <ul>
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% end %}
+                    </ul>
+                {% end %}
+                <form action="/login" method="post">
+                    {{ xsrf_form_html() }}
+                    <label for="username">Username:</label><input name="username" id="username" /><br />
+                    <span class="form_indent form_descriptor">@oden.se</span><br/><br>
+                    <label for="password">Password:</label><input name="password" id="password" /><br /><br>
+                    <input class="form_button" type="submit" value="logga in" />
+                </form>
+                <a href="/register">Sign up</a>
+            </div>
+{% end %}

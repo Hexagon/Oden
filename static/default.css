@@ -1,0 +1,46 @@
+#header {
+    margin-top:         20px;
+}
+
+#menu {
+    background-color:   #EFEFEF;
+    padding:            7px;
+    padding-left:       10px;
+    -moz-border-radius: 5px;
+    border-radius:      5px;
+    -moz-box-shadow:    2px 2px 3px #CCC;
+    -webkit-box-shadow: 2px 2px 3px #CCC;
+    box-shadow:         2px 2px 3px #CCC;
+    border:             1px solid #DDD;
+    margin-bottom:      25px;
+}
+
+.header_alpha {
+    color:              #777;
+}
+
+label {
+    width:              170px;
+    text-align:         right;
+    display:            inline-block;
+    padding-right:      10px;
+}
+
+.form_indent {
+    margin-left:        180px;
+}
+
+.form_button {
+    margin-left:        250px;
+    width:              88px;
+}
+.form_descriptor {
+    width:              150px;
+    text-align:         right;
+    color:              #666;
+    font-size:          0.8em;
+}
+
+input {
+    width:              150px;
+}

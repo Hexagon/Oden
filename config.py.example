@@ -1,0 +1,52 @@
+# Oden
+# Copyright (C) 2010 Robin Nilsson <robinnilsson@gmail.com>
+#
+# This is released under GNU aGPL, see COPYRIGHT for full license.
+
+# General configuration
+# ---------------------------------------------------------------
+
+# Settings you probably want to change
+pod_url             =   'http://localhost:8888/'
+pod_domain          =   'localhost'
+port                =   8888
+cookie_secret       =   '61oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo='
+
+# Settings you might need to edit
+mongo_host          =   'localhost'
+mongo_port          =   27017
+openssl_executable  =   '/usr/bin/openssl'
+temp_path           =   '/tmp/'
+
+# Settings you could edit, if you really want to
+mongo_db            =   'oden-dev'
+
+# Settings you probably don't want to edit
+public_dir          =   'static'
+xsrf_cookies        =   True
+login_url           =   '/login'
+
+
+# Route configuration
+# ----------------------------------------------------------------
+from handlers import main, login, public#, aspect
+
+routes = [
+
+# The index is to be replace with /aspects/all
+(r"/", main.Index),
+
+# Login (TODO: Rename to outside or something like that)
+(r"/login/?", login.Index),
+(r"/logout/?", login.Logout),
+(r"/register/?", login.Register),
+
+# Aspect
+#(r"/aspects/manage/?", login.Register),
+
+# Public
+(r"/.well-known/host-meta", public.HostMeta),
+(r"/webfinger", public.Webfinger),
+(r"/hcard/users/([0-9A-Fa-f]+)/?", public.Hcard),
+
+] # end routes

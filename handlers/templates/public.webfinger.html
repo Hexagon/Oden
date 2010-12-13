@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XRD xmlns="http://docs.oasis-open.org/ns/xri/xrd-1.0">
+  <Subject>acct:{{ people_handle }}</Subject>
+  <Alias>"{{ pod_url }}"</Alias>
+  <Link rel="http://microformats.org/profile/hcard" type="text/html" href="{{ pod_url }}hcard/users/{{ people_guid }}"/>
+  <Link rel="http://joindiaspora.com/seed_location" type="text/html" href="{{ pod_url }}"/>
+  <Link rel="http://joindiaspora.com/guid" type = 'text/html' href="{{ people_guid }}"/>
+  <Link rel="http://schemas.google.com/g/2010#updates-from" type="application/atom+xml" href="{{ pod_url }}public/{{ user }}.atom"/>
+  <Link rel="oden-public-key" type='{{ pubkey_type }}' href="{{ pubkey }}"/>
+</XRD>
+

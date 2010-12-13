@@ -1,0 +1,20 @@
+Install:
+---------------------------------------------------------------------
+1. Install python >= 2.6 and < 3
+2. Install the dependencies listed below
+3. Copy config.py.example to config.py and edit to suit 
+   your environment
+4. Before running, run you can run test.py to verify 
+   that everything works
+
+
+Deps:
+---------------------------------------------------------------------
+ Stand-alone software:
+  - openssl binary (configure path to openssl in config.py)
+  - MongoDB (this currently doesn't support authentication)
+
+ Python modules:
+  - Tornado (python-tornado packade)
+  - pyMongo (python-pymongo package)
+--------------------------------------------------------------------
