@@ -14,6 +14,7 @@ import config
 from handlers import helper
 from data import people
 from data import user
+from data import aspects
 
 # Switch to database 'oden-test' while testing
 config.mongo_db = "oden-test"
@@ -23,12 +24,14 @@ success         = 0
 fail            = 0
 
 # Disable/Enable tests
-test_rsa                = True
-test_new_people         = True
+test_rsa                = False
+test_new_people         = False
 test_new_user           = True
+test_new_aspect         = True
 test_get_user_by_user   = True
 test_get_user_by_id     = True
 test_get_people_by_id   = True
+
 
 # Run selected tests
 # ------------------------------------
@@ -75,6 +78,25 @@ if test_new_user or test_get_user_by_id or test_get_user_by_user:
         _id = tmp.object_id
         _user = "testman"
         if res:
+            print " - Success"
+            success += 1
+        else:
+            print " - Fail (" + tmp.debug + ")"
+            fail +=1
+    except:
+        print "Epic fail"
+        fail +=1
+
+# MongoDB Aspect object add
+if test_new_user or test_get_user_by_id or test_get_user_by_user:
+    print "Creating a new aspect..."
+    try:
+        tmp = aspects.Aspects()
+        res = tmp.new("Foo",_id)             # _id is assigned in test_new_user
+        _aspect_id = tmp.object_id
+        tmp_aspect = aspects.Aspects()
+        tmp_aspect.get_by_id(_aspect_id)
+        if res and tmp_aspect.data[u'name'] == "Foo":
             print " - Success"
             success += 1
         else:
