@@ -1,10 +1,10 @@
 {% extends "application.html" %}
 
 {% block container_override %}
-            <div class="span-12 append-6 prepend-6 last">
-                <div class="span-8"><h1>ODEN</h1></div>
-                <div class="span-4 last"><h1>Sign up</h1></div>
-
+            <div class="span-8 append-8 prepend-8 last">
+                <h2>Sign up!</h2>
+                <hr />
+                <br />
                 {% if errors %}
                     <p><b>Errors found:</b></p>
                     <ul>
@@ -14,7 +14,7 @@
                     </ul>
                     
                 {% end %}
-
+                <br />
                 <form action="/register" method="post">
                     {{ xsrf_form_html() }}
                     <label for="username">Username:</label><input name="username" id="username" {% if user %}value="{{ user }}"{% end %} /><br />
@@ -24,6 +24,10 @@
                     <label for="password_confirm">Confirm pass:</label><input name="password_confirm" id="password_confirm" type="password" /><br /><br>
                     <input class="form_button" type="submit" value="Sign up" />
                 </form>
-                <a href="/login">Sign in</a>
+                <br />
+                <hr />
+                <div class="span-10 last right">
+                    <a href="/login">Sign in</a>
+                </div>
             </div>
 {% end %}

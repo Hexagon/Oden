@@ -1,5 +1,20 @@
 {% extends "application.html" %}
 
+
 {% block main %}
-<p>Lolster</p>
+    <h1> All Aspects </h1>
+{% end %}
+
+
+{% block right %}
+    <h3>Your aspects</h3>
+    <p>todo</p>
+    <hr />
+    <h3>New aspect</h3>
+    {% if status %}<p>{{ status }}</p>{% end %}
+    <form action="/aspects/new" method="post" name="new_aspect_form" id="new_aspect_form">
+        {{ xsrf_form_html() }}
+        <input name="name" id="name" /><br />
+        <input type="submit" value="Create" />
+    </form>
 {% end %}

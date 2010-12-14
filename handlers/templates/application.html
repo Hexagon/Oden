@@ -10,27 +10,34 @@
     <body>
         <div class="container">
             {% block container_override %}
-	        <div id="header" class="span-24 last">
+	        <div id="header" class="span-18">
                 {% block header %}
 		        <h1>ODEN</h1>
                 {% end %}
 	        </div>
+            <div id="header_right" class="span-6 last right">
+                <a href="/user/edit">Account settings</a> | <a href="/user/edit">Edit profile</a> | <a href="/logout">Sign out</a>
+            </div>
 	        <div id="menu" class="span-24 last">
                 {% block menu %}
-		        <a href="/aspects/all">Home</a> | <a href="/user/edit">Edit user</a> | <a href="/logout">Sign out</a>
+                <a href="/aspects/all">All Aspects</a>
                 {% end %}
 	        </div>
 
             {% block content_override %}
+	        <div class="span-20">
+            {% block main %}
 	        <div class="span-4">
 		        {% block left %}
 		        Left sidebar
                 {% end %}
 	        </div>
 	        <div class="span-16">
-		        {% block main %}
+		        {% block center %}
                 Centerpiece
                 {% end %}
+	        </div>
+            {% end %}
 	        </div>
 	        <div class="span-4 last">
 		        {% block right %}

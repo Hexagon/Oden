@@ -22,7 +22,6 @@ class Aspects(dbobject.Base):
                     "post_ids":[],
                     "request_ids":[]
                     }
-
         # Try inserting object
         try:
             self.object_id = self.collection.insert(aspect)

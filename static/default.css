@@ -1,5 +1,5 @@
-#header {
-    margin-top:         20px;
+body {
+    padding-top:        20px;
 }
 
 #menu {
@@ -20,18 +20,18 @@
 }
 
 label {
-    width:              170px;
+    width:              140px;
     text-align:         right;
     display:            inline-block;
     padding-right:      10px;
 }
 
 .form_indent {
-    margin-left:        180px;
+    margin-left:        150px;
 }
 
 .form_button {
-    margin-left:        250px;
+    margin-left:        220px;
     width:              88px;
 }
 .form_descriptor {
@@ -43,4 +43,9 @@ label {
 
 input {
     width:              150px;
+    border:             1px solid #CCCCCC;
+}
+
+.right {
+    text-align:right;
 }
