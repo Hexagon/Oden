@@ -3,7 +3,7 @@ import crypt
 import dbobject
 import datetime
 import config
-from handlers import helper
+from lib import rsa_helper
 from data import people
 
 class User(dbobject.Base):
@@ -35,7 +35,7 @@ class User(dbobject.Base):
         _pod_url = config.pod_url
 
         # Generate RSA key pair, 4096 bit
-        keys = helper.generate_rsa(4096)
+        keys = rsa_helper.generate_rsa(4096)
         if keys != None:
             _priv_key = keys[1]
             _pub_key = keys[0]

@@ -38,4 +38,5 @@ class Aspects(dbobject.Base):
             self.object_id = []
             for aspect in self.data:
                 self.object_id.append(aspect[u'_id'])
+            self.data.rewind()
         return self.data

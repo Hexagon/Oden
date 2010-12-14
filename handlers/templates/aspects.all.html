@@ -6,8 +6,14 @@
 
 {% block right %}
     <h3>Your aspects</h3>
-    <p>todo</p>
+    <table>
+    {% for aspect in user_params['aspects'] %}
+        <tr><td>{{ aspect[u'name'] }}</td><td><a href="/aspects/remove/{{ aspect[u'_id'] }}">(remove)</a></td></tr>
+    {% end %}
+    </table>
+    <br />
     <hr />
+    <br />
     <h3>New aspect</h3>
     {% if status %}<p>{{ status }}</p>{% end %}
     <form action="/aspects/new" method="post" name="new_aspect_form" id="new_aspect_form">

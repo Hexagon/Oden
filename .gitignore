@@ -10,3 +10,5 @@ data/*.pyc
 data/*.pyo
 handlers/*.pyc
 handlers/*.pyo
+lib/*.pyc
+lib/*.pyo

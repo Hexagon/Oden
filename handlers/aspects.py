@@ -33,15 +33,13 @@ class All(helper.AuthHandler):
         
         title = "Welcome %s" % (current_user_obj.get_full_name_or_nickname())
 
-        self.render("templates/aspects.all.html",title=title,status=status)
+        self.render("templates/aspects.all.html",user_params=self.user_params,title=title,status=status)
 
 class Create(helper.AuthHandler):
     def post(self):
         # This should be fetched using ajax eventually
         if not self.get_argument("name",None):
             self.redirect("/aspects/all/?create=invalid1")
-
-       
 
         if re.match("^[a-zA-Z0-9_.-]+$", self.get_argument("name")):
             if aspects.Aspects().new(self.get_argument("name"),self.current_user):
@@ -52,11 +50,10 @@ class Create(helper.AuthHandler):
             self.redirect("/aspects/all/?create=invalid")
 
 class Remove(helper.AuthHandler):
-    def post(self):
+    def get(self,_id):
         
-        # This should be done using ajax, eventually
-        current_user_obj = user.User()
-        current_user_obj.get_by_id(self.current_user) # Fetch user
+        # Check that this is the users aspect
+        
 
         self.redirect("/aspects/all?remove=success")
 
