@@ -43,6 +43,9 @@ routes = [
 
 # Aspect
 (r"/aspects/all/?", aspects.All),
+(r"/aspects/new/?", aspects.Create),
+(r"/aspects/remove/([0-9A-Fa-f]+)/?", aspects.Remove), # Not yet implemented
+(r"/aspects/([0-9A-Fa-f]+)/?", aspects.All), # Not yet implemented
 
 # Edit account
 (r"/user/edit/?", user.Edit),

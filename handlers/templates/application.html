@@ -20,10 +20,12 @@
             </div>
 	        <div id="menu" class="span-24 last">
                 {% block menu %}
-                <a href="/aspects/all">All Aspects</a>
+                <a href="/aspects/all">All Aspects</a> &gt; 
+                {% end %}
+                {% block aspect_list %}
+                <span>ToDo: Aspect list</span>
                 {% end %}
 	        </div>
-
             {% block content_override %}
 	        <div class="span-20">
             {% block main %}
@@ -46,9 +48,10 @@
 	        </div>	
             {% end %}
 
-	        <div class="span-24 last">
+	        <div id="footer" class="span-24 last center">
 		        {% block footer %}
-		        Footer
+		        <hr />
+                <p>powered by oden</p>
                 {% end %}
 	        </div>
             {% end %}

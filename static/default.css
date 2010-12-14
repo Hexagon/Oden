@@ -1,3 +1,4 @@
+/* Layout */
 body {
     padding-top:        20px;
 }
@@ -8,17 +9,19 @@ body {
     padding-left:       10px;
     -moz-border-radius: 5px;
     border-radius:      5px;
-    -moz-box-shadow:    2px 2px 3px #CCC;
-    -webkit-box-shadow: 2px 2px 3px #CCC;
-    box-shadow:         2px 2px 3px #CCC;
-    border:             1px solid #DDD;
+    -moz-box-shadow:    2px 2px 3px #DDD;
+    -webkit-box-shadow: 2px 2px 3px #DDD;
+    box-shadow:         2px 2px 3px #DDD;
+    border:             1px solid #CCC;
     margin-bottom:      25px;
 }
 
-.header_alpha {
-    color:              #777;
+#footer {
+    margin-top:         40px;
+    color:              #BBB;
 }
 
+/* Forms */
 label {
     width:              140px;
     text-align:         right;
@@ -46,6 +49,11 @@ input {
     border:             1px solid #CCCCCC;
 }
 
+/* Typography */
+
 .right {
     text-align:right;
+}
+.center {
+    text-align:center;
 }
