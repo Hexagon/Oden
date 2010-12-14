@@ -24,7 +24,7 @@ class New(helper.PublicHandler):
             self.redirect("/")
 
         title = "Sign up"
-        self.render("templates/login.register.html",title="ODEN | Sign Up",errors=[],user='',email='')
+        self.render("templates/login.register.html",title="ODEN | Sign Up",errors=[],user='',email='',pod_domain=config.pod_domain)
 
     def post(self):
 
@@ -84,13 +84,13 @@ class New(helper.PublicHandler):
             # Registrera anvandaren
             new_user = user.User().new(_user,_pass,_email)
             if new_user:
-                self.render("templates/login.register.success.html",title="ODEN | Welcome",user=_user)
+                self.render("templates/login.register.success.html",title="ODEN | Welcome",user=_user,pod_domain=config.pod_domain)
             else:
-                self.render("templates/login.register.html",title="ODEN | Sign Up",errors=["Unknown server error"],user=_user,email=_email)
+                self.render("templates/login.register.html",title="ODEN | Sign Up",errors=["Unknown server error"],user=_user,email=_email,pod_domain=config.pod_domain)
         else:
             # Let the user try again
             title = "Sign up"
-            self.render("templates/login.register.html",title="ODEN | Sign Up",errors=errors,user=_user,email=_email)
+            self.render("templates/login.register.html",title="ODEN | Sign Up",errors=errors,user=_user,email=_email,pod_domain=config.pod_domain)
 
 class Edit(helper.AuthHandler):
     def get(self):

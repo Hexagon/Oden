@@ -1,7 +1,7 @@
 {% extends "application.html" %}
 
 {% block container_override %}
-            <div class="span-8 append-8 prepend-8 last">
+            <div class="span-10 append-7 prepend-7 last">
                 <h2>Sign up!</h2>
                 <hr />
                 <br />
@@ -18,7 +18,7 @@
                 <form action="/register" method="post">
                     {{ xsrf_form_html() }}
                     <label for="username">Username:</label><input name="username" id="username" {% if user %}value="{{ user }}"{% end %} /><br />
-                    <span class="form_indent form_descriptor">@oden.se</span><br/><br>
+                    <span class="form_indent form_descriptor">@{{ pod_domain }}</span><br/><br>
                     <label for="username">Email:</label><input name="email" id="email" {% if email %}value="{{ email }}"{% end %} /><br />
                     <label for="password">Password:</label><input name="password" id="password" type="password" /><br /><br>
                     <label for="password_confirm">Confirm pass:</label><input name="password_confirm" id="password_confirm" type="password" /><br /><br>
