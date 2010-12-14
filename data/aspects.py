@@ -40,3 +40,13 @@ class Aspects(dbobject.Base):
                 self.object_id.append(aspect[u'_id'])
             self.data.rewind()
         return self.data
+
+    # Delete the current aspect
+    def delete(self):
+        if self.data != None:
+            self.collection.remove(self.data)
+            self.object_id = None
+            self.data = None
+            return True
+        else:
+            return False

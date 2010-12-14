@@ -21,6 +21,7 @@ class All(helper.AuthHandler):
 
         status = None
         status = "Aspect is now deleted"                 if remove_status == "success" else status
+        status = "Aspect could not be deleted"           if remove_status == "fail"    else status
         status = "New aspect successfully created"       if create_status == "success" else status
         status = "The new aspect could not be created"   if create_status == "fail"    else status 
         status = "The aspect name was not valid"         if create_status == "invalid" else status 
@@ -53,9 +54,15 @@ class Remove(helper.AuthHandler):
     def get(self,_id):
         
         # Check that this is the users aspect
-        
-
-        self.redirect("/aspects/all?remove=success")
+        del_aspect = aspects.Aspects()
+        if del_aspect.get_by_id(_id):
+            if del_aspect.data[u'user_id'] == self.current_user:
+                del_aspect.delete()
+                self.redirect("/aspects/all?remove=success")
+            else:
+                self.redirect("/aspects/all?remove=fail")
+        else:
+            self.redirect("/aspects/all?remove=fail")
 
 
 
