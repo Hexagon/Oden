@@ -23,7 +23,12 @@
                 <a href="/aspects/all">All Aspects</a> &gt; 
                 {% end %}
                 {% block aspect_list %}
-                <span>ToDo: Aspect list</span>
+                    {% if user_params['aspects'].count() == 0 %}
+                        <span>Hmm, no aspects huh?</span>
+                    {% end %}
+                    {% for aspect in user_params['aspects'].clone() %}
+                        <a href="/aspects/{{ aspect[u'_id'] }}">{{ aspect[u'name'] }}</a> &nbsp;&nbsp;&nbsp;
+                    {% end %}
                 {% end %}
 	        </div>
             {% block content_override %}

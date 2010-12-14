@@ -11,7 +11,7 @@
 # Replace these tests with unittest
 
 import config
-from handlers import helper
+from lib import rsa_helper
 from data import people
 from data import user
 from data import aspects
@@ -24,14 +24,13 @@ success         = 0
 fail            = 0
 
 # Disable/Enable tests
-teste_magicsig          = True
-test_rsa                = False
-test_new_people         = False
-test_new_user           = False
-test_new_aspect         = False
-test_get_user_by_user   = False
-test_get_user_by_id     = False
-test_get_people_by_id   = False
+test_rsa                = True
+test_new_people         = True
+test_new_user           = True
+test_new_aspect         = True
+test_get_user_by_user   = True
+test_get_user_by_id     = True
+test_get_people_by_id   = True
 
 
 # Run selected tests
@@ -39,7 +38,7 @@ test_get_people_by_id   = False
 if test_rsa:
     print "Generating 4096 bit RSA key pair..."
     try:
-        res = helper.generate_rsa(4096)
+        res = rsa_helper.generate_rsa(4096)
         if res:
             print " - Success"
             success += 1

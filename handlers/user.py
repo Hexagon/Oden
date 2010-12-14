@@ -101,7 +101,7 @@ class Edit(helper.AuthHandler):
         edit_user.get_by_id(self.current_user)
         handle = edit_user.data[u'username'].strip().lower() + "@" + config.pod_domain
 
-        self.render("templates/user.edit.html",title="ODEN | Edit user",handle=handle,done=False,errors=errors,email=edit_user.data[u'email'])
+        self.render("templates/user.edit.html",title="ODEN | Edit user",user_params=self.user_params,handle=handle,done=False,errors=errors,email=edit_user.data[u'email'])
 
     def post(self):
 
@@ -152,11 +152,11 @@ class Edit(helper.AuthHandler):
                     update_user.update(self.current_user,_email,password=_pass)
                 else:
                     update_user.update(self.current_user,_email)
-                self.render("templates/user.edit.html",title="ODEN | Welcome",done=True,errors=errors,handle=handle,email=_email)
+                self.render("templates/user.edit.html",title="ODEN | Welcome",user_params=self.user_params,done=True,errors=errors,handle=handle,email=_email)
             except:
                 errors.append("Could not save changes, unknown error.")
 
         # We got errors
-        self.render("templates/user.edit.html",title="ODEN | Welcome",done=False,errors=errors,handle=handle,email=_email)
+        self.render("templates/user.edit.html",title="ODEN | Welcome",user_params=self.user_params,done=False,errors=errors,handle=handle,email=_email)
 
 

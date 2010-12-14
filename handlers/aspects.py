@@ -36,6 +36,24 @@ class All(helper.AuthHandler):
 
         self.render("templates/aspects.all.html",user_params=self.user_params,title=title,status=status)
 
+class Show(helper.AuthHandler):
+    def get(self,_id):
+
+        user_aspect = aspects.Aspects()
+        user_aspect.get_by_id(_id) # Fetch selected aspect
+        
+        if user_aspect.data != None:
+            if user_aspect.data[u'user_id'] != self.current_user:
+                # This user is not authorized for this aspect
+                raise tornado.web.HTTPError(403)
+
+            title = "ODEN | Aspect: %s" % (user_aspect.data[u'name'])
+            self.render("templates/aspects.show.html",user_params=self.user_params,title=title,aspect_name=user_aspect.data[u'name'])
+        else:
+            # Error, return 403 Unauthorized
+            raise tornado.web.HTTPError(404)
+
+
 class Create(helper.AuthHandler):
     def post(self):
         # This should be fetched using ajax eventually
