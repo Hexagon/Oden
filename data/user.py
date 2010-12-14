@@ -82,6 +82,29 @@ class User(dbobject.Base):
             self.debug = "Could not insert object in  ..."
             return False
 
+
+    # Creates a new user
+    def update(self,user_id,email,password=""):
+        self.get_by_id(user_id)
+
+        _user = self.data[u'username'].strip().lower()
+        _pass = password
+        _email = email
+        _salt = "%s%s" % (_user[1],_email[0])
+        if _pass != "":
+            _enc_pass = crypt.crypt(_pass, _salt)
+
+        # Try inserting object
+        try:
+            if _pass != "":
+                self.data[u'encrypted_password'] = _enc_pass
+            self.data[u'email'] = _email
+            self.collection.update({"_id":self.object_id},self.data,upsert=True)
+        except:
+            # User could not be created
+            self.debug = "Could not save update  ..."
+            return False
+
     # Authenticates a user, using username and password
     def authenticate(self,username,password):
         _user = username.lower().strip()

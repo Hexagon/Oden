@@ -7,7 +7,7 @@ import tornado.web
 import helper
 import re
 import config
-from data import people
+from data import people,user
 
 # Serves the pod host-meta file
 
@@ -118,4 +118,58 @@ class Hcard(helper.PublicHandler):
                     first_name=first_name,
                     family_name=family_name)
 
+# login.Index
+# - Default route for users who are not authenticated
+# - Presents the user with a login box
+#
+# GET Template: login.index.html
+class Login(helper.PublicHandler):
+
+    def get(self):
+
+        # No need to be on loginpage if user is logged in
+        if self.current_user:
+            self.redirect("/")
+
+        # Page title
+        title = "ODEN | Sign In"
+
+        self.render("templates/login.index.html",title=title,errors=[],pod_domain=config.pod_domain)
+
+    def post(self):
+
+        # Page title
+        title = "ODEN | Signing In"
+
+        # No need to login if user is logged in
+        if self.current_user:
+            self.redirect("/")
+
+        # Get username and password from post arguments
+        try:
+            _user = self.get_argument("username")
+            _pass = self.get_argument("password")
+        except:
+            # Credentials missing
+            self.render("templates/login.index.html",title=title,errors=["Credentials missing"],pod_domain=config.pod_domain)
+            return
+
+        # Authenticate user
+        usr_auth = user.User()
+        if usr_auth.authenticate(_user,_pass):
+            # Save user id to cookie
+            self.set_secure_cookie("user_id", str(usr_auth.data[u'_id']))
+            self.redirect("/")
+        else:
+            self.render("templates/login.index.html",title=title,errors=["Wrong username or password"],pod_domain=config.pod_domain)
+
+# login.Logout
+# - Clear cookies (sign out current user)
+#
+# GET Template: None
+class Logout(helper.AuthHandler):
+    def get(self):
+        # Clear cookies to make sure the user is logged out
+        self.clear_all_cookies()
+        self.redirect("/login")
 

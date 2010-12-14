@@ -29,20 +29,23 @@ login_url           =   '/login'
 
 # Route configuration
 # ----------------------------------------------------------------
-from handlers import main, login, public#, aspect
+from handlers import public, aspects, user
 
 routes = [
 
-# The index is to be replace with /aspects/all
-(r"/", main.Index),
+# Front page is redirected to /aspects/all
+(r"/", aspects.All),
 
 # Login (TODO: Rename to outside or something like that)
-(r"/login/?", login.Index),
-(r"/logout/?", login.Logout),
-(r"/register/?", login.Register),
+(r"/login/?", public.Login),
+(r"/logout/?", public.Logout),
+(r"/register/?", user.New),
 
 # Aspect
-#(r"/aspects/manage/?", login.Register),
+(r"/aspects/all/?", aspects.All),
+
+# Edit account
+(r"/user/edit/?", user.Edit),
 
 # Public
 (r"/.well-known/host-meta", public.HostMeta),

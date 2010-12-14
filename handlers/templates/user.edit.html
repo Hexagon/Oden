@@ -1,0 +1,26 @@
+{% extends "application.html" %}
+
+{% block main %}
+            <h1>Edit user</h1>
+            {% if errors %}
+                <p><b>Errors found:</b></p>
+                <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% end %}
+                </ul>
+            {% end %}
+            {% if done %}
+                <p><b>Your settings is updated</b></p>
+            {% end %}
+            <form action="/user/edit" method="post">
+                {{ xsrf_form_html() }}
+                <label for="Handle">Oden-handle:</label><input name="handle" id="handle" value="{{ handle }}" readonly="readonly" /><br />
+                <span class="form_indent form_descriptor">This is your handle</span><br/><br>
+                <label for="email">Email:</label><input name="email" id="email" {% if email %}value="{{ email }}"{% end %} /><br /><br />
+                <label for="password">Password:</label><input name="password" id="password" type="password" /><br />
+                <label for="password_confirm">Confirm pass:</label><input name="password_confirm" id="password_confirm" type="password" /><br />
+                <span class="form_indent form_descriptor">Just leave these empty if you don't want to change password</span><br/><br />
+                <input class="form_button" type="submit" value="Update user" />
+            </form>
+{% end %}

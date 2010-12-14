@@ -15,8 +15,8 @@
                 <form action="/login" method="post">
                     {{ xsrf_form_html() }}
                     <label for="username">Username:</label><input name="username" id="username" /><br />
-                    <span class="form_indent form_descriptor">@oden.se</span><br/><br>
-                    <label for="password">Password:</label><input name="password" id="password" /><br /><br>
+                    <span class="form_indent form_descriptor">@{{ pod_domain }}</span><br/><br>
+                    <label for="password">Password:</label><input name="password" id="password" type="password" /><br /><br>
                     <input class="form_button" type="submit" value="logga in" />
                 </form>
                 <a href="/register">Sign up</a>
