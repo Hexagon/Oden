@@ -84,9 +84,7 @@ if test_salmon:
     print "Creating Salmon XML..."
     try:
         salmon_obj = salmon.Salmon("Robin Nilsson","robinnilsson@test.com",res[1],res[0],"Testing testing")
-        print salmon_obj.write_xml()
-        print
-        if True:
+        if salmon_obj:
             print " - Success"
             success += 1
         else:
