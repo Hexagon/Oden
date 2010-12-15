@@ -13,6 +13,8 @@ class People(dbobject.Base):
         self.collection = self.db['people']
         self.debug = None
 
+        self.xml_attr = ['_id','diaspora_handle','url','profile']
+
     # Creates a new person
     def new(self,user_id,oden_handle,serialized_public_key,pod_url,   # Mandatory
             searchable=True,image_url=None,gender=""                        # Optionals
@@ -22,6 +24,8 @@ class People(dbobject.Base):
         profile =   {
                     "searchable":searchable,
                     "image_url":image_url,
+                    "image_url_medium":image_url,
+                    "image_url_small":image_url,
                     "gender":gender,
                     "oden_handle":oden_handle,
                     "birthday":birthday,

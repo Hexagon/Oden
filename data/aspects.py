@@ -10,6 +10,8 @@ class Aspects(dbobject.Base):
         self.collection = self.db['aspects']
         self.debug = None
 
+        # Specify what data is to be included in federation
+
     # Creates a new aspect
     def new(self,name,user_id):
 
@@ -22,6 +24,7 @@ class Aspects(dbobject.Base):
                     "post_ids":[],
                     "request_ids":[]
                     }
+
         # Try inserting object
         try:
             self.object_id = self.collection.insert(aspect)
