@@ -23,9 +23,9 @@ Install:
 Deps:
 ---------------------------------------------------------------------
  Stand-alone software:
-  - openssl binary (configure path to openssl in config.py)
   - MongoDB (this currently doesn't support authentication)
 
  Python modules:
-  - Tornado (python-tornado packade)
-  - pyMongo (python-pymongo package)
+  - tornado (python-tornado packade)
+  - pymongo (python-pymongo package)
+  - pycrypto (pycrypto/python-pycrypto package)
