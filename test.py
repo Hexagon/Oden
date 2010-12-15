@@ -11,7 +11,7 @@
 # Replace these tests with unittest
 
 import config
-from lib.oden import rsa_helper
+from lib.oden import rsa_helper,aes_helper,salmon
 from data import people
 from data import user
 from data import aspects
@@ -25,12 +25,14 @@ fail            = 0
 
 # Disable/Enable tests
 test_rsa                = True
-test_new_people         = True
-test_new_user           = True
-test_new_aspect         = True
-test_get_user_by_user   = True
-test_get_user_by_id     = True
-test_get_people_by_id   = True
+test_aes                = True
+test_salmon             = True
+test_new_people         = False
+test_new_user           = False
+test_new_aspect         = False
+test_get_user_by_user   = False
+test_get_user_by_id     = False
+test_get_people_by_id   = False
 
 
 # Run selected tests
@@ -49,6 +51,94 @@ if test_rsa:
         print " - Epic fail"
         fail +=1
 
+if test_rsa:
+    print "Encrypting message with public key using rsa_helper..."
+    try:
+        plain = "Testing encryption"
+        cipher = rsa_helper.encrypt(plain,res[0])
+        if cipher and cipher != plain:
+            print " - Success"
+            success += 1
+        else:
+            print " - Fail"
+            fail +=1
+    except:
+        print " - Epic fail"
+        fail +=1
+
+if test_rsa:
+    print "Decrypting message with private key using rsa_helper..."
+    try:
+        new_plain = rsa_helper.decrypt(cipher,res[1])
+        if new_plain == plain:
+            print " - Success"
+            success += 1
+        else:
+            print " - Fail"
+            fail +=1
+    except:
+        print " - Epic fail"
+        fail +=1
+
+if test_salmon:
+    print "Creating Salmon XML..."
+    #try:
+    salmon_obj = salmon.Salmon("Robin Nilsson","robinnilsson@test.com",res[1],res[0],"Testing testing")
+    print salmon_obj.write_xml()
+    print
+    if True:
+        print " - Success"
+        success += 1
+    else:
+        print " - Fail"
+        fail +=1
+    #except:
+    #    print " - Epic fail"
+    #    fail +=1
+
+if test_aes:
+    print "Generating 256 bit AES key..."
+    try:
+        res = aes_helper.get_random_key()
+        res2 = aes_helper.get_random_key()
+        if res and res != res2:
+            print " - Success"
+            success += 1
+        else:
+            print " - Fail"
+            fail +=1
+    except:
+        print " - Epic fail"
+        fail +=1
+
+if test_aes:
+    print "Encrypting message using aes_helper..."
+    try:
+        plain = "Testing encryption"
+        cipher = aes_helper.encrypt(plain,res)
+        if cipher and cipher != plain:
+            print " - Success"
+            success += 1
+        else:
+            print " - Fail"
+            fail +=1
+    except:
+        print " - Epic fail"
+        fail +=1
+
+if test_aes:
+    print "Decrypting message using aes_helper..."
+    try:
+        new_plain = aes_helper.decrypt(cipher,res)
+        if new_plain.strip() == plain.strip():
+            print " - Success"
+            success += 1
+        else:
+            print " - Fail"
+            fail +=1
+    except:
+        print " - Epic fail"
+        fail +=1
 
 # MongoDB People object add
 if test_new_people or test_get_people_by_id:
