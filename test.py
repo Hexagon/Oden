@@ -27,17 +27,17 @@ fail            = 0
 test_rsa                = True
 test_aes                = True
 test_salmon             = True
-test_new_people         = False
-test_new_user           = False
-test_new_aspect         = False
-test_get_user_by_user   = False
-test_get_user_by_id     = False
-test_get_people_by_id   = False
+test_new_people         = True
+test_new_user           = True
+test_new_aspect         = True
+test_get_user_by_user   = True
+test_get_user_by_id     = True
+test_get_people_by_id   = True
 
 
 # Run selected tests
 # ------------------------------------
-if test_rsa:
+if test_rsa or test_salmon:
     print "Generating 4096 bit RSA key pair..."
     try:
         res = rsa_helper.generate_rsa(4096)
@@ -51,7 +51,7 @@ if test_rsa:
         print " - Epic fail"
         fail +=1
 
-if test_rsa:
+if test_rsa or test_salmon:
     print "Encrypting message with public key using rsa_helper..."
     try:
         plain = "Testing encryption"
@@ -66,7 +66,7 @@ if test_rsa:
         print " - Epic fail"
         fail +=1
 
-if test_rsa:
+if test_rsa or test_salmon:
     print "Decrypting message with private key using rsa_helper..."
     try:
         new_plain = rsa_helper.decrypt(cipher,res[1])
@@ -82,19 +82,19 @@ if test_rsa:
 
 if test_salmon:
     print "Creating Salmon XML..."
-    #try:
-    salmon_obj = salmon.Salmon("Robin Nilsson","robinnilsson@test.com",res[1],res[0],"Testing testing")
-    print salmon_obj.write_xml()
-    print
-    if True:
-        print " - Success"
-        success += 1
-    else:
-        print " - Fail"
+    try:
+        salmon_obj = salmon.Salmon("Robin Nilsson","robinnilsson@test.com",res[1],res[0],"Testing testing")
+        print salmon_obj.write_xml()
+        print
+        if True:
+            print " - Success"
+            success += 1
+        else:
+            print " - Fail"
+            fail +=1
+    except:
+        print " - Epic fail"
         fail +=1
-    #except:
-    #    print " - Epic fail"
-    #    fail +=1
 
 if test_aes:
     print "Generating 256 bit AES key..."
