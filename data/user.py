@@ -3,7 +3,7 @@ import crypt
 import dbobject
 import datetime
 import config
-from lib import rsa_helper
+from lib.oden import rsa_helper
 from data import people
 
 class User(dbobject.Base):

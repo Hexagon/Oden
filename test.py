@@ -11,7 +11,7 @@
 # Replace these tests with unittest
 
 import config
-from lib import rsa_helper
+from lib.oden import rsa_helper
 from data import people
 from data import user
 from data import aspects
