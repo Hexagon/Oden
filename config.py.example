@@ -15,8 +15,6 @@ cookie_secret       =   '61oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo='
 # Settings you might need to edit
 mongo_host          =   'localhost'
 mongo_port          =   27017
-openssl_executable  =   '/usr/bin/openssl'
-temp_path           =   '/tmp/'
 
 # Settings you could edit, if you really want to
 mongo_db            =   'oden-dev'
@@ -45,7 +43,7 @@ routes = [
 (r"/aspects/all/?", aspects.All),
 (r"/aspects/new/?", aspects.Create),
 (r"/aspects/remove/([0-9A-Fa-f]+)/?", aspects.Remove),
-(r"/aspects/([0-9A-Fa-f]+)/?", aspects.Show), # Not yet implemented
+(r"/aspects/([0-9A-Fa-f]+)/?", aspects.Show),
 
 # Edit account
 (r"/user/edit/?", user.Edit),
