@@ -8,6 +8,7 @@ import helper
 import re
 import config
 import datetime
+import base64
 from data import people,user
 
 # Serves the pod host-meta file
@@ -49,7 +50,7 @@ class Webfinger(helper.PublicHandler):
 
         _people_guid = _people_obj.data[u'_id']
         _pubkey_type="RSA"
-        _pubkey = _people_obj.data[u'serialized_public_key']
+        _pubkey = base64.b64encode(_people_obj.data[u'serialized_public_key'])
 
         self.set_header("Content-Type", "application/xrd+xml")
         self.render("templates/public.webfinger.html",
