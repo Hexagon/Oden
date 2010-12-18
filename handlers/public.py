@@ -10,6 +10,7 @@ import config
 import datetime
 import base64
 from data import people,user
+from lib.oden import salmon
 
 # Serves the pod host-meta file
 
@@ -199,8 +200,14 @@ class Receive(helper.PublicHandler):
 
         # TODO: check that person exists
         print "Received remote data"
-        print "XML: %s \n" % _xml
-        print "ID: %s \n" % _xml
+        print "To ID: %s \n" % _xid
+        print "Data:\n"
+
+        # Decode salmon
+        decoder = salmon.Salmon()
+        result = decoder.read_xml(_xml)
+
+        print result
 
         # We currently pretend that the object is received and handled
         tornado.web.HTTPError(200)

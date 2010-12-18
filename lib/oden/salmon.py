@@ -1,6 +1,9 @@
 from Crypto.Cipher import AES
 from lib.oden import aes_helper,rsa_helper
 from lib.magicsig import magicsigalg, MagicEnvelopeProtocol, Envelope, utils
+from xml.etree import ElementTree
+import sys
+import re
 import base64
 import json
 
@@ -24,6 +27,9 @@ class Salmon:
         # Create the magic signature envelope
         env_protocol = MagicEnvelopeProtocol()
         self.envelope = MagicEnvelopeProtocol().ToXmlString(Envelope(self.env_message,'application/atom+xml',self.env_signature),fulldoc=False)
+
+    def __init__(self):
+        pass
 
     def sign_salmon(self,message,author_key):
 
@@ -59,3 +65,53 @@ class Salmon:
 
         return xml
 
+    def read_xml(self,xml,private_key):
+        
+        # Parse Salmon document
+        tree = ElementTree.fromstring(xml)
+        
+        encrypted_header = tree.findtext('.//{http://www.w3.org/2005/Atom}encrypted_header')
+        envelope_data_encrypted = tree.findtext('.//{http://salmon-protocol.org/ns/magic-env}data')
+        envelope_signature = tree.findtext('.//{http://salmon-protocol.org/ns/magic-env}data')
+        envelope_encoding = tree.findtext('.//{http://salmon-protocol.org/ns/magic-env}encoding')
+        envelope_alg = tree.findtext('.//{http://salmon-protocol.org/ns/magic-env}alg')
+
+        # Validate stuff
+        if envelope_encoding != 'base64url':
+            # Wrong encoding in salmon
+            return False
+        
+        if envelope_alg != 'RSA-SHA256':
+            # Wrong algorithm used for signature
+            return False
+        
+        # Check signature
+        # TODO: IMPORTANT! Verify signature
+
+        # B64decode and unfold encrypted header
+        encrypted_header = json.loads(base64.b64decode(encrypted_header))
+        encrypted_header_key = base64.b64decode(encrypted_header['aes_key'])
+        encrypted_header_cipher = base64.b64decode(encrypted_header['ciphertext'])
+        
+        # Extract the key json (diaspora adds some random padding before json data, so we'll filter that out)
+        test_dec = re.search('\{\".*\"}',rsa_helper.decrypt(encrypted_header_key,private_key))
+        if test_dec.group(0) == None:
+            test_dec = re.search('\{\'.*\'}',rsa_helper.decrypt(encrypted_header_key,private_key))
+
+        # Save key and iv and decrypt header
+        encrypted_header_decrypted_key = [  base64.b64decode(json.loads(test_dec.group(0))[u'key']),
+                                            base64.b64decode(json.loads(test_dec.group(0))[u'iv'])]
+
+        decrypted_header = aes_helper.decrypt(encrypted_header_cipher,encrypted_header_decrypted_key).strip('\x07')
+        
+        # Extract AES iv and key from decrypted header
+        tree_header = ElementTree.fromstring(decrypted_header)
+        header_iv = base64.urlsafe_b64decode(tree_header.findtext('.//iv'))
+        header_key = base64.urlsafe_b64decode(tree_header.findtext('.//aes_key'))
+        header_author = tree_header.findtext('.//author/name')
+        header_author_handle = tree_header.findtext('.//author/uri')
+
+        # Decrypt Salmon message
+        envelope_data = aes_helper.decrypt(base64.b64decode(base64.b64decode(envelope_data_encrypted)),[header_key,header_iv]).strip('\x07')
+
+        return [header_author_handle,envelope_data]
