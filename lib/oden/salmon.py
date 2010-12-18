@@ -65,7 +65,7 @@ class Salmon:
 
         return xml
 
-    def filter_printable(str):
+    def filter_printable(self,str):
         return ''.join([c for c in str if ord(c) > 31 or ord(c) == 9])
 
     def read_xml(self,xml,private_key):
