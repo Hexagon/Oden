@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 import sys
 import re
 import base64
-import json
+import simplejson
 
 class Salmon:
     def __init__(self,author_name,author_uri,author_private_key,receiver_public_key,activity):
@@ -53,7 +53,7 @@ class Salmon:
         ciphertext = base64.b64encode(aes_helper.encrypt(decrypted_header,key))
         
         # Encrypt AES session-key with the receivers public key
-        key_hash = json.dumps({'key':base64.b64encode(key[0]),'iv':base64.b64encode(key[1])})
+        key_hash = simplejson.dumps({'key':base64.b64encode(key[0]),'iv':base64.b64encode(key[1])})
         encrypted_key = base64.b64encode(rsa_helper.encrypt(key_hash,self.public_key))
 
         # Put it all together to a nice Salmon-friendly atom XML
@@ -79,17 +79,17 @@ class Salmon:
         # Validate stuff
         if envelope_encoding != 'base64url':
             # Wrong encoding in salmon
-            return False
+            return None
         
         if envelope_alg != 'RSA-SHA256':
             # Wrong algorithm used for signature
-            return False
+            return None
         
         # Check signature
         # TODO: IMPORTANT! Verify signature
 
         # B64decode and unfold encrypted header
-        encrypted_header = json.loads(base64.b64decode(encrypted_header))
+        encrypted_header = simplejson.loads(base64.b64decode(encrypted_header))
         encrypted_header_key = base64.b64decode(encrypted_header['aes_key'])
         encrypted_header_cipher = base64.b64decode(encrypted_header['ciphertext'])
         
@@ -99,8 +99,8 @@ class Salmon:
             test_dec = re.search('\{\'.*\'}',rsa_helper.decrypt(encrypted_header_key,private_key))
 
         # Save key and iv and decrypt header
-        encrypted_header_decrypted_key = [  base64.b64decode(json.loads(test_dec.group(0))[u'key']),
-                                            base64.b64decode(json.loads(test_dec.group(0))[u'iv'])]
+        encrypted_header_decrypted_key = [  base64.b64decode(simplejson.loads(test_dec.group(0))[u'key']),
+                                            base64.b64decode(simplejson.loads(test_dec.group(0))[u'iv'])]
 
         decrypted_header = aes_helper.decrypt(encrypted_header_cipher,encrypted_header_decrypted_key).strip('\x07')
         
