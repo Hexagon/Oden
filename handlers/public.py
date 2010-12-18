@@ -203,14 +203,20 @@ class Receive(helper.PublicHandler):
         print "To ID: %s \n" % _id
         print "Data:\n"
 
-        # Decode salmon
-        decoder = salmon.Salmon()
-        result = decoder.read_xml(_xml)
+        # Get recepient
+        recv_user = user.User()
+        if recv_user.get_by_id(_id) != None:
+            # Decode salmon
+            decoder = salmon.Salmon()
+            result = decoder.read_xml(_xml,recv_user[u'serialized_private_key'])
+            
+            print result
 
-        print result
+            # We currently pretend that the object is received and handled
+            tornado.web.HTTPError(200)
 
-        # We currently pretend that the object is received and handled
-        tornado.web.HTTPError(200)
+        else:
+            tornado.web.HTTPError(404)
 
 # Host the public atom feed for users at /username.atom and /username
 class AtomFeed(helper.PublicHandler):
