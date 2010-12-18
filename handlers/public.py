@@ -200,7 +200,7 @@ class Receive(helper.PublicHandler):
 
         # TODO: check that person exists
         print "Received remote data"
-        print "To ID: %s \n" % _xid
+        print "To ID: %s \n" % _id
         print "Data:\n"
 
         # Decode salmon
