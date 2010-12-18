@@ -53,5 +53,7 @@ routes = [
 (r"/webfinger", public.Webfinger),
 (r"/hcard/users/([0-9A-Fa-f]+)/?", public.Hcard),
 (r"/receive/users/([0-9A-Fa-f]+)/?", public.Receive),
+(r"/public/([0-9A-Za-z]+).atom", public.AtomFeed),
+(r"/public/([0-9A-Za-z]+)", public.AtomFeed),
 
 ] # end routes

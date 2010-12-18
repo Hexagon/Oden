@@ -29,3 +29,4 @@ Deps:
   - tornado (python-tornado packade)
   - pymongo (python-pymongo package)
   - pycrypto (pycrypto/python-pycrypto package)
+  - json (python-json package)

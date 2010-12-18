@@ -7,6 +7,7 @@ import tornado.web
 import helper
 import re
 import config
+import datetime
 from data import people,user
 
 # Serves the pod host-meta file
@@ -107,7 +108,6 @@ class Hcard(helper.PublicHandler):
             family_name = ""
         else:
             family_name =  family_name
-
         self.render("templates/public.hcard.html",
                     pod_url=config.pod_url,
                     people_searchable=people_searchable,
@@ -199,3 +199,39 @@ class Receive(helper.PublicHandler):
 
         # We currently pretend that the object is received and handled
         tornado.web.HTTPError(200)
+
+# Host the public atom feed for users at /username.atom and /username
+class AtomFeed(helper.PublicHandler):
+    def get(self,user_name):
+        #try:
+        # Check for people object in db
+        _people_obj = people.People()
+        _people_obj.get_by_handle(user_name+"@"+config.pod_domain)
+
+        # Check for valid username
+        _username = _people_obj.get_username()
+        if _username == None:
+            # Invalid people_id, return 404 Not found
+            raise tornado.web.HTTPError(404)
+
+        # All is ok, keep on rocking ...
+        #except:
+            # Error, return 500 Internal server error
+         #   raise tornado.web.HTTPError(500)
+
+
+        if _people_obj.data[u'profile'][u'image_url'] == None:
+            image_url = config.pod_url + "static/images/default_large.png"
+        else:
+            #TODO: Add support for custom avatars, for now, just use defaults
+            image_url = config.pod_url + "static/images/default_large.png"
+
+        full_name = _people_obj.get_full_name_or_nickname()
+
+        self.set_header("Content-Type", "application/atom+xml")
+        self.render("templates/public.atom.xml",
+                    pod_url=config.pod_url,
+                    image_url=image_url,
+                    full_name=full_name,
+                    user=_username,
+                    time_now=datetime.datetime.utcnow())
