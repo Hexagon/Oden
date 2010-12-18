@@ -52,5 +52,6 @@ routes = [
 (r"/.well-known/host-meta", public.HostMeta),
 (r"/webfinger", public.Webfinger),
 (r"/hcard/users/([0-9A-Fa-f]+)/?", public.Hcard),
+(r"/receive/users/([0-9A-Fa-f]+)/?", public.Receive),
 
 ] # end routes

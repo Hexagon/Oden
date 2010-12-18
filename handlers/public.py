@@ -173,3 +173,29 @@ class Logout(helper.AuthHandler):
         self.clear_all_cookies()
         self.redirect("/login")
 
+# public.Receive
+# - This is where all remote data is received
+#
+class Receive(helper.PublicHandler):
+
+    def get(self,_id):
+
+        # No need to get this one
+        raise tornado.web.HTTPError(404)
+
+    def post(self,_id):
+
+        # Get username and password from post arguments
+        _xml = self.get_argument("xml",None)
+        _id = _id
+
+        if _xml == None: 
+            tornado.web.HTTPError(422)
+
+        # TODO: check that person exists
+        print "Received remote data"
+        print "XML: %s \n" % _xml
+        print "ID: %s \n" % _xml
+
+        # We currently pretend that the object is received and handled
+        tornado.web.HTTPError(200)
