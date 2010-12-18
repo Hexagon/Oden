@@ -179,6 +179,10 @@ class Logout(helper.AuthHandler):
 #
 class Receive(helper.PublicHandler):
 
+    # Disable XSRF-Cookie check as these requests isn't supposed to have one
+    def check_xsrf_cookie(self): 
+        pass
+
     def get(self,_id):
 
         # No need to get this one
@@ -218,8 +222,7 @@ class AtomFeed(helper.PublicHandler):
         # All is ok, keep on rocking ...
         #except:
             # Error, return 500 Internal server error
-         #   raise tornado.web.HTTPError(500)
-
+        #   raise tornado.web.HTTPError(500)
 
         if _people_obj.data[u'profile'][u'image_url'] == None:
             image_url = config.pod_url + "static/images/default_large.png"
