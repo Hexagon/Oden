@@ -65,6 +65,9 @@ class Salmon:
 
         return xml
 
+    def filter_printable(str):
+        return ''.join([c for c in str if ord(c) > 31 or ord(c) == 9])
+
     def read_xml(self,xml,private_key):
         
         # Parse Salmon document
@@ -102,7 +105,7 @@ class Salmon:
         encrypted_header_decrypted_key = [  base64.b64decode(simplejson.loads(test_dec.group(0))[u'key']),
                                             base64.b64decode(simplejson.loads(test_dec.group(0))[u'iv'])]
 
-        decrypted_header = aes_helper.decrypt(encrypted_header_cipher,encrypted_header_decrypted_key).strip('\x07')
+        decrypted_header = self.filter_printable(aes_helper.decrypt(encrypted_header_cipher,encrypted_header_decrypted_key))
         
         # Extract AES iv and key from decrypted header
         tree_header = ElementTree.fromstring(decrypted_header)
@@ -112,6 +115,6 @@ class Salmon:
         header_author_handle = tree_header.findtext('.//author/uri')
 
         # Decrypt Salmon message
-        envelope_data = aes_helper.decrypt(base64.b64decode(base64.b64decode(envelope_data_encrypted)),[header_key,header_iv]).strip('\x07')
+        envelope_data = self.filter_printable(aes_helper.decrypt(base64.b64decode(base64.b64decode(envelope_data_encrypted)),[header_key,header_iv]))
 
         return [header_author_handle,envelope_data]
