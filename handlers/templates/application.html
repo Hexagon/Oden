@@ -10,11 +10,14 @@
     <body>
         <div class="container">
             {% block container_override %}
-	        <div id="header" class="span-18">
+	        <div id="header" class="span-10">
                 {% block header %}
 		        <h1>ODEN</h1>
                 {% end %}
 	        </div>
+            <div id="header_right" class="span-8">
+                <form action="/search" method="post"><input name="q" id="q" /><input type="submit" /></form>
+            </div>
             <div id="header_right" class="span-6 last right">
                 <a href="/user/edit">Account settings</a> | <a href="/user/edit">Edit profile</a> | <a href="/logout">Sign out</a>
             </div>

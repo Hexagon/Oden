@@ -5,6 +5,7 @@ import dbobject
 import datetime
 import handlers.helper
 import config
+from lib.oden import webfinger
 
 class People(dbobject.Base):
     def __init__(self):
@@ -17,7 +18,7 @@ class People(dbobject.Base):
     # Creates a new person
     def new(self,user_id,oden_handle,serialized_public_key,pod_url,   # Mandatory
             searchable=True,image_url=None,gender=""                        # Optionals
-            ,birthday=None,last_name="",first_name="",bio=""):
+            ,birthday=None,last_name="",first_name="",bio="",guid=None):
 
         # Construct profile (is to be included directly in the people object)
         profile =   {
@@ -43,6 +44,10 @@ class People(dbobject.Base):
                     "serialized_public_key":serialized_public_key,
                     "oden_handle":oden_handle
                     }
+
+        # Add GUID if specified
+        if guid != None:
+            people[u'_id'] = pymongo.objectid.ObjectId(guid)
 
         # Try inserting object
         try:
@@ -82,5 +87,21 @@ class People(dbobject.Base):
     def get_username(self):
         if self.data != None:
             return self.data[u'oden_handle'].split("@%s" % (config.pod_domain))[0].strip().lower()
+        else:
+            return None
+
+    # Construct a people object by webfinger
+    def build_from_webfinger(self,uri):
+    	wf = webfinger.Webfinger().finger(uri)
+        if wf == None:
+            return None
+        elif wf.valid:
+            if wf.hcard_searchable == "true":
+                wf.hcard_searchable = True
+            else:
+                wf.hcard_searchable = False
+            return self.new(None,wf.uri,wf.public_key,wf.seed_location,
+            searchable=wf.hcard_searchable,image_url=wf.hcard_image_large                        
+            ,last_name=wf.hcard_last_name,first_name=wf.hcard_first_name,guid=wf.guid)
         else:
             return None

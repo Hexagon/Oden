@@ -180,6 +180,9 @@ class Logout(helper.AuthHandler):
 #
 class Receive(helper.PublicHandler):
 
+    def filter_non_printable(str):
+        return ''.join([c for c in str if ord(c) > 31 or ord(c) == 9])
+
     # Disable XSRF-Cookie check as these requests isn't supposed to have one
     def check_xsrf_cookie(self): 
         pass
