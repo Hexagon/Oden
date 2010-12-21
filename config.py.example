@@ -57,6 +57,7 @@ routes = [
 (r"/public/([0-9A-Za-z]+)", public.AtomFeed),
 
 # Ajax requests
-(r"/ajax/person_by_handle/([\@\.\_\-0-9A-Za-z]+)", ajax.PersonByHandle),
+(r"/ajax/person_by_handle/?", ajax.PersonByHandle),
+(r"/ajax/add_contact/?", ajax.SendContactRequest),
 
 ] # end routes
