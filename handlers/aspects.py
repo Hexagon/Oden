@@ -48,7 +48,7 @@ class Show(helper.AuthHandler):
                 raise tornado.web.HTTPError(403)
 
             title = "ODEN | Aspect: %s" % (user_aspect.data[u'name'])
-            self.render("templates/aspects.show.html",user_params=self.user_params,title=title,aspect_name=user_aspect.data[u'name'])
+            self.render("templates/aspects.show.html",user_params=self.user_params,title=title,aspect_name=user_aspect.data[u'name'],aspect_guid=user_aspect.data[u'_id'])
         else:
             # Error, return 403 Unauthorized
             raise tornado.web.HTTPError(404)

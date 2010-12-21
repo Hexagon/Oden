@@ -1,5 +1,6 @@
 import config
 from Crypto.PublicKey import RSA
+import binascii
 
 # Generate a RSA key pair using Crypto.PublicKey.RSA
 def generate_rsa(bits):

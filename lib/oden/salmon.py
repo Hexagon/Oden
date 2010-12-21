@@ -8,10 +8,13 @@ import base64
 import simplejson
 
 class Salmon:
-    def __init__(self,author_name,author_uri,author_private_key,receiver_public_key,activity):
+    def __init__(self):
+        pass
+
+    def create(self,author_name,author_uri,author_private_key,receiver_public_key,activity):
 
         self.author = author_name
-        self.author_uri = utils.NormalizeUserIdToUri(author_uri)
+        self.author_uri = author_uri
         self.author_private_key = rsa_helper.pem_to_private_tuple(author_private_key)
         self.public_key = receiver_public_key
 
@@ -19,7 +22,7 @@ class Salmon:
         self.aes_key = aes_helper.get_random_key()
 
         # Encrypt activity
-        self.env_message = base64.urlsafe_b64encode(aes_helper.encrypt(activity,self.aes_key))
+        self.env_message = base64.urlsafe_b64encode(base64.urlsafe_b64encode(aes_helper.encrypt(activity,self.aes_key)))
 
         # Sign the activity data
         self.env_signature = self.sign_salmon(self.env_message,self.author_private_key)
@@ -27,9 +30,6 @@ class Salmon:
         # Create the magic signature envelope
         env_protocol = MagicEnvelopeProtocol()
         self.envelope = MagicEnvelopeProtocol().ToXmlString(Envelope(self.env_message,'application/atom+xml',self.env_signature),fulldoc=False)
-
-    def __init__(self):
-        pass
 
     def sign_salmon(self,message,author_key):
 
@@ -56,12 +56,15 @@ class Salmon:
         key_hash = simplejson.dumps({'key':base64.b64encode(key[0]),'iv':base64.b64encode(key[1])})
         encrypted_key = base64.b64encode(rsa_helper.encrypt(key_hash,self.public_key))
 
+        # Pack encrypted header
+        encrypted_header = base64.b64encode(simplejson.dumps({'aes_key':encrypted_key,'ciphertext':ciphertext}))
+
         # Put it all together to a nice Salmon-friendly atom XML
         xml =  "<?xml version='1.0' encoding='UTF-8'?>\n\
                 <entry xmlns='http://www.w3.org/2005/Atom'>\n\
                     <encrypted_header>%s</encrypted_header>\n\
                     %s\n\
-                </entry>" % (ciphertext,self.envelope)
+                </entry>" % (encrypted_header,self.envelope)
 
         return xml
 
@@ -115,6 +118,6 @@ class Salmon:
         header_author_handle = tree_header.findtext('.//author/uri')
 
         # Decrypt Salmon message
-        envelope_data = self.filter_printable(aes_helper.decrypt(base64.b64decode(base64.b64decode(envelope_data_encrypted)),[header_key,header_iv]))
+        envelope_data = self.filter_printable(aes_helper.decrypt(base64.urlsafe_b64decode(base64.urlsafe_b64decode(envelope_data_encrypted)),[header_key,header_iv]))
 
         return [header_author_handle,envelope_data]

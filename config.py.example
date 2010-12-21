@@ -27,7 +27,7 @@ login_url           =   '/login'
 
 # Route configuration
 # ----------------------------------------------------------------
-from handlers import public, aspects, user
+from handlers import public, aspects, user, ajax
 
 routes = [
 
@@ -55,5 +55,8 @@ routes = [
 (r"/receive/users/([0-9A-Fa-f]+)/?", public.Receive),
 (r"/public/([0-9A-Za-z]+).atom", public.AtomFeed),
 (r"/public/([0-9A-Za-z]+)", public.AtomFeed),
+
+# Ajax requests
+(r"/ajax/person_by_handle/([\@\.\_\-0-9A-Za-z]+)", ajax.PersonByHandle),
 
 ] # end routes

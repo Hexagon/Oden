@@ -5,19 +5,18 @@
         <link rel="stylesheet" href="/static/blueprint/screen.css" type="text/css" media="screen, projection">
         <link rel="stylesheet" href="/static/blueprint/print.css" type="text/css" media="print">	
         <!--[if lt IE 8]><link rel="stylesheet" href="/static/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
-        <link rel="stylesheet" href="/static/default.css" type="text/css" media="all">	
+        <link rel="stylesheet" href="/static/default.css" type="text/css" media="all">
+        <script src="/static/js/jquery-1.4.4.min.js" type="text/javascript"></script>
+        <script src="/static/js/oden.js" type="text/javascript"></script> 
     </head>
     <body>
         <div class="container">
             {% block container_override %}
-	        <div id="header" class="span-10">
+	        <div id="header" class="span-18">
                 {% block header %}
 		        <h1>ODEN</h1>
                 {% end %}
 	        </div>
-            <div id="header_right" class="span-8">
-                <form action="/search" method="post"><input name="q" id="q" /><input type="submit" /></form>
-            </div>
             <div id="header_right" class="span-6 last right">
                 <a href="/user/edit">Account settings</a> | <a href="/user/edit">Edit profile</a> | <a href="/logout">Sign out</a>
             </div>

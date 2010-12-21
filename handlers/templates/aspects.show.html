@@ -1,4 +1,15 @@
 {% extends "application.html" %}
 {% block main %}
     <h1> Aspect: {{ aspect_name }} </h1>
+    <input type="hidden" id="aspect_guid" value="{{ aspect_guid }}" />
+{% end %}
+{% block right %}
+    <h3> Add contact </h3>
+    <div id="search_box">
+        <input name="search_q" id="search_q" />
+        <input id="search_submit" type="button" value="search" />
+    </div>
+    <div id="search_result">
+        <!-- -->
+    </div>
 {% end %}

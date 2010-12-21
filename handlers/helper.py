@@ -18,11 +18,17 @@ class AuthHandler(PublicHandler):
         # Redirect user if not logged in
         if not self.get_current_user():
             self.redirect("/login")
-    
-        current_user_obj = user.User()
-        current_user_obj.get_by_id(self.current_user)
 
-        tmp_aspects = aspects.Aspects()
-        tmp_aspects.get_all_by_user_id(self.current_user)
-        self.user_params = {'aspects':tmp_aspects.data,'username':current_user_obj.data[u'username']}
+        try:
+            current_user_obj = user.User()
+            current_user_obj.get_by_id(self.current_user)
+
+            tmp_aspects = aspects.Aspects()
+            tmp_aspects.get_all_by_user_id(self.current_user)
+
+            self.user_params = {'aspects':tmp_aspects.data,'username':current_user_obj.data[u'username']}
+        except:
+            # This is wierd, log out
+            self.clear_all_cookies()
+            self.redirect("/login")
 

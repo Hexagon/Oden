@@ -1,5 +1,6 @@
 import urllib2
 from xml.etree import ElementTree
+import base64
 import re
 
 class OdenWFResult:
@@ -38,6 +39,7 @@ class OdenWFResult:
 class Webfinger:
     def __init__(self):
         self.result = OdenWFResult()
+        self.error = None
         pass
 
     def finger(self,uri):
@@ -63,6 +65,7 @@ class Webfinger:
                 f = urllib2.urlopen('https://%s/.well-known/host-meta' % (self.domain))
                 self.host_meta = f.read(4096)
             except:
+                self.error = "Could not get host-meta"
                 return None
 
         # Validate that we have a host meta document
@@ -71,6 +74,7 @@ class Webfinger:
             self.host = host_meta_tree.findtext('.//{http://host-meta.net/xrd/1.0}Host')
             self.lrdd_template = host_meta_tree.find('.//{http://docs.oasis-open.org/ns/xri/xrd-1.0}Link').get('template')
         except:
+            self.error = "Could not verify host-meta"
             return None
 
         self.result.lrdd_url = self.lrdd_template.replace("{uri}",uri)
@@ -80,33 +84,36 @@ class Webfinger:
             f = urllib2.urlopen(self.result.lrdd_url)
             self.webfinger_profile = f.read(4096)
         except:
+            self.error = "Could not get webfinger profile"
             return None
 
         # Parse the webfinger profile
-        try:        
-            webfinger_profile_tree = ElementTree.fromstring(self.webfinger_profile)
-            self.result.seed_location = webfinger_profile_tree.findtext('.//{http://docs.oasis-open.org/ns/xri/xrd-1.0}Subject')
-            for node in webfinger_profile_tree.getiterator():
-                if node.tag == "{http://docs.oasis-open.org/ns/xri/xrd-1.0}Link":
-                    if node.get("rel") == "http://microformats.org/profile/hcard":
-                        self.result.hcard_url = node.get("href")
-                    elif node.get("rel") == "http://joindiaspora.com/seed_location":
-                        self.result.seed_location = node.get("href")
-                    elif node.get("rel") == "http://joindiaspora.com/guid":
-                        self.result.guid = node.get("href")
-                    elif node.get("rel") == "http://schemas.google.com/g/2010#updates-from":
-                        self.result.updates_from = node.get("href")
-                    elif node.get("rel") == "diaspora-public-key":
-                        self.result.public_key_type = node.get("type")
-                        self.result.public_key = node.get("href")
-        except:
-            return None
+        #try:        
+        webfinger_profile_tree = ElementTree.fromstring(self.webfinger_profile)
+        self.result.seed_location = webfinger_profile_tree.findtext('.//{http://docs.oasis-open.org/ns/xri/xrd-1.0}Subject')
+        for node in webfinger_profile_tree.getiterator():
+            if node.tag == "{http://docs.oasis-open.org/ns/xri/xrd-1.0}Link":
+                if node.get("rel") == "http://microformats.org/profile/hcard":
+                    self.result.hcard_url = node.get("href")
+                elif node.get("rel") == "http://joindiaspora.com/seed_location":
+                    self.result.seed_location = node.get("href")
+                elif node.get("rel") == "http://joindiaspora.com/guid":
+                    self.result.guid = node.get("href")
+                elif node.get("rel") == "http://schemas.google.com/g/2010#updates-from":
+                    self.result.updates_from = node.get("href")
+                elif node.get("rel") == "diaspora-public-key":
+                    self.result.public_key_type = node.get("type")
+                    self.result.public_key = base64.b64decode(node.get("href").replace(" ","").replace("\n",""))
+        #except:
+        #    self.error = "Could not parse webfinger profile"
+        #    return None
     
         # Try getting the hcard
         try:
             f = urllib2.urlopen(self.result.hcard_url)
             self.hcard_data = f.read()
         except:
+            self.error = "Could not get hcard"
             return None
 
         # Parse the hcard
@@ -138,5 +145,6 @@ class Webfinger:
             test = self.result.Validate()
             return self.result
         except:
+            self.error = "Could not parse hcard"
             return None
 
